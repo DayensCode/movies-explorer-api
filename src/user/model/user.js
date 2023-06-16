@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator: (email) => validator.isEmail(email),
-      message: 'Incorrect email',
+      message: 'Введите электронную почту',
     },
   },
   password: {
@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     minlength: 2,
     maxlength: 30,
-    default: 'Имя',
+    required: true,
   },
 });
 
