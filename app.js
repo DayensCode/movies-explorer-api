@@ -8,6 +8,20 @@ const app = express();
 app.use(express.json());
 app.use(router);
 
+app.use((err, req, res, next) => {
+  const {
+    status = 500,
+    message,
+  } = err;
+  res.status(status)
+    .send({
+      message: status === 500
+        ? 'На сервере произошла ошибка'
+        : message,
+    });
+  next();
+});
+
 async function start() {
   try {
     await mongoose.connect(MONGO_URL);
