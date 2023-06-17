@@ -3,6 +3,7 @@ const NotFoundError = require('../../error/not-found-error');
 
 function getUserInfo(req, res, next) {
   const { _id } = req.user;
+
   User.findById(_id)
     .then((user) => {
       if (!user) {
@@ -17,6 +18,7 @@ function getUserInfo(req, res, next) {
 function updateUserInfo(req, res, next) {
   const { email, name } = req.body;
   const { _id } = req.user;
+
   User.findByIdAndUpdate(_id, { email, name }, { new: true, runValidators: true })
     .then((user) => {
       if (!user) {
