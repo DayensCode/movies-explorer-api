@@ -1,5 +1,28 @@
+const bcrypt = require('bcrypt');
 const User = require('../model/user');
 const NotFoundError = require('../../error/not-found-error');
+const ConflictError = require('../../error/conflict-error');
+const BadRequestError = require('../../error/bad-request-error');
+
+function createUser(req, res, next) {
+  const { email, password, name } = req.body;
+
+  bcrypt.hash(password, 10)
+    .then((hash) => {
+      User.create({ email, name, password: hash })
+        .then(() => res.status(201).send({ data: email, name }))
+        .catch((err) => {
+          if (err.code === 11000) {
+            return next(new ConflictError('Пользователь уже существует'));
+          }
+          if (err.name === 'Validation Error') {
+            return next(new BadRequestError('Некорректные данные'));
+          }
+          return next(err);
+        });
+    })
+    .catch(next);
+}
 
 function getUserInfo(req, res, next) {
   const { _id } = req.user;
@@ -33,4 +56,5 @@ function updateUserInfo(req, res, next) {
 module.exports = {
   getUserInfo,
   updateUserInfo,
+  createUser,
 };
