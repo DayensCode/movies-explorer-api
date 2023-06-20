@@ -1,3 +1,4 @@
+const { errors } = require('celebrate');
 const express = require('express');
 const mongoose = require('mongoose');
 const { MONGO_URL } = require('./src/utils/config');
@@ -7,6 +8,7 @@ const { PORT = 3000 } = process.env;
 const app = express();
 app.use(express.json());
 app.use(router);
+app.use(errors());
 
 app.use((err, req, res, next) => {
   const {
