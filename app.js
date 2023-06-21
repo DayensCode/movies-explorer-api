@@ -1,6 +1,7 @@
 const { errors } = require('celebrate');
 const express = require('express');
 const mongoose = require('mongoose');
+const helmet = require('helmet');
 const { requestLogger, errorLogger } = require('./src/middlewares/logger');
 const limiter = require('./src/middlewares/rateLimiter');
 const { MONGO_URL } = require('./src/utils/config');
@@ -9,6 +10,7 @@ const router = require('./src/routes/index');
 const { PORT = 3000 } = process.env;
 const app = express();
 app.use(express.json());
+app.use(helmet());
 app.use(requestLogger);
 app.use(limiter);
 app.use(router);
