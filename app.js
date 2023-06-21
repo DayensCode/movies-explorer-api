@@ -1,13 +1,16 @@
 const { errors } = require('celebrate');
 const express = require('express');
 const mongoose = require('mongoose');
+const { requestLogger, errorLogger } = require('./src/middlewares/logger');
 const { MONGO_URL } = require('./src/utils/config');
 const router = require('./src/routes/index');
 
 const { PORT = 3000 } = process.env;
 const app = express();
 app.use(express.json());
+app.use(requestLogger);
 app.use(router);
+app.use(errorLogger);
 app.use(errors());
 
 app.use((err, req, res, next) => {
