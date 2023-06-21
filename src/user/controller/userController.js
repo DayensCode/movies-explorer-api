@@ -27,7 +27,7 @@ function createUser(req, res, next) {
   bcrypt.hash(password, 10)
     .then((hash) => {
       User.create({ email, name, password: hash })
-        .then(() => res.status(201).send({ data: email, name }))
+        .then(() => res.status(201).send({ data: { email, name } }))
         .catch((err) => {
           if (err.code === 11000) {
             return next(new ConflictError('Пользователь уже существует'));
