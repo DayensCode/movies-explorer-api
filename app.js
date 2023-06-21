@@ -11,6 +11,7 @@ const router = require('./src/routes/index');
 const { PORT = 3000 } = process.env;
 const app = express();
 app.use(express.json());
+app.use(cors());
 app.use(helmet());
 app.use(requestLogger);
 app.use(limiter);
