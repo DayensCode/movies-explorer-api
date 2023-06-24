@@ -1,4 +1,5 @@
 # movies-explorer-api
+
 Репозиторий бэкенда для приложения `Movies Explorer`
 
 ## Ссылки на проект
