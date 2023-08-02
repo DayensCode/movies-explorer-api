@@ -20,17 +20,14 @@ app.use(errorLogger);
 app.use(errors());
 
 app.use((err, req, res, next) => {
-  const {
-    status = 500,
-    message,
-  } = err;
-  res.status(status)
-    .send({
-      message: status === 500
-        ? 'На сервере произошла ошибка'
-        : message,
-    });
-  next();
+  if (err.code === 11000) {
+    return res.status(409).send({ message: 'Пользователь с таким email уже существует' });
+  }
+
+  const statusCode = err.statusCode || 500;
+  const message = statusCode === 500 ? 'На сервере произошла ошибка' : err.message;
+  res.status(statusCode).send({ message });
+  return next();
 });
 
 async function start() {
