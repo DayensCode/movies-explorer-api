@@ -24,7 +24,7 @@ app.use((err, req, res, next) => {
     return res.status(409).send({ message: 'Пользователь с таким email уже существует' });
   }
 
-  const statusCode = err.statusCode || 500;
+  const statusCode = err.statusCode || err.status || 500;
   const message = statusCode === 500 ? 'На сервере произошла ошибка' : err.message;
   res.status(statusCode).send({ message });
   return next();
